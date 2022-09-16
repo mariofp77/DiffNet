@@ -326,44 +326,44 @@ def write_average( avg):
     for i, s in enumerate( avg):
         for j, o in enumerate( avg[s]):
             data[j,i] = avg[s][o]
-    print '# %s' % (' '.join( [ '%5s' % s for s in header ]))
+    print('# %s' % (' '.join( [ '%5s' % s for s in header ])))
     for j in xrange(data.shape[0]):
-        print '  ' + (' '.join( [ '%5.2f' % r for r in data[j] ])),
-        print ' # %s' % rows[j]
+        print('  ' + (' '.join( [ '%5.2f' % r for r in data[j] ])))
+        print(' # %s' % rows[j])
     
 def main( args):
-    import cPickle as pickle
+    import pickle
     if args.out_distance_net is not None:
-        print 'Benchmarking diffnet for distance nets...'
+        print('Benchmarking diffnet for distance nets...')
         stats, avg, topo = benchmark_distance_net( args.num_points, ntimes=args.num_times)
         pickle.dump( dict(stats=stats, topo=topo), 
                      file( args.out_distance_net, 'wb'))
         write_average( avg)
     if args.out_random_net is not None:
-        print 'Benchmarking diffnet for random nets...'
+        print('Benchmarking diffnet for random nets...')
         stats, avg, topo = benchmark_random_net( args.num_points, args.sii_offset, args.sij_min, args.sij_max, ntimes=args.num_times)
         pickle.dump( dict(stats=stats, topo=topo), 
                      file( args.out_random_net, 'wb'))
         write_average( avg)
     if args.out_const_rel_net is not None:
-        print 'Benchmarking diffnet with constant relative errors...'
+        print('Benchmarking diffnet with constant relative errors...')
         stats, avg, topo = benchmark_const_rel_net( args.num_points, ntimes=args.num_times)
         pickle.dump( dict(stats=stats, topo=topo),
                      file( args.out_const_rel_net, 'wb'))
         write_average( avg)
     if args.out_uniform_net is not None:
-        print 'Analyzing diffnet for uniform nets...'
+        print('Analyzing diffnet for uniform nets...')
         results = analyze_uniform_net()
         pickle.dump( results, file( args.out_uniform_net, 'wb'))
     if args.out_E_tree_timings is not None:
-        print 'Benchmark E-tree timings...'
+        print('Benchmark E-tree timings...')
         timings, dn = benchmark_E_tree( args.num_points, args.num_times)
-        print 'timings(E)/timings(E-tree) = %.2f' % np.mean(timings['E']/timings['Etree'])
-        print '|dn| = %g' % dn
+        print('timings(E)/timings(E-tree) = %.2f' % np.mean(timings['E']/timings['Etree']))
+        print('|dn| = %g' % dn)
     if args.out_sparse_net:
-        print 'Benchmarking sparse A-optimal network...'
+        print('Benchmarking sparse A-optimal network...')
         results = benchmark_sparse_net( args.num_points, args.measure_per_quantity, args.connectivity, args.sii_offset, args.sij_min, args.sij_max, args.num_times)
-        print 'mean ratio: %.3f +/- %.3f' % results
+        print('mean ratio: %.3f +/- %.3f' % results)
 
 if __name__ == '__main__':
     main( opts().parse_args())
